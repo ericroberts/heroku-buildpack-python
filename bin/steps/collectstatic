@@ -12,11 +12,14 @@ if [ ! "$DISABLE_COLLECTSTATIC" ] && [ -f "$MANAGE_FILE" ]; then
 
     # Check if collectstatic is configured properly.
     python $MANAGE_FILE collectstatic --dry-run --noinput &> /dev/null && RUN_COLLECTSTATIC=true
+    python $MANAGE_FILE bower_install
+    python $MANAGE_FILE collectstatic --noinput
 
     # Compile assets if collectstatic appears to be kosher.
     if [ "$RUN_COLLECTSTATIC" ]; then
 
         echo "-----> Collecting static files"
+        python $MANAGE_FILE bower_install 2>&1 | sed '/^bower install/d;/^$/d;/^ /d' | indent
         python $MANAGE_FILE collectstatic --noinput  2>&1 | sed '/^Copying/d;/^$/d;/^ /d' | indent
 
         [ $? -ne 0 ] && {
