@@ -10,11 +10,11 @@ MANAGE_FILE=${MANAGE_FILE:-fakepath}
 if [ ! "$DISABLE_COLLECTSTATIC" ] && [ -f "$MANAGE_FILE" ]; then
     set +e
 
-    echo "-------> bower install"
-    python $MANAGE_FILE bower_install --traceback
+    echo "-----> bower install"
+    python $MANAGE_FILE bower_install --traceback | indent
 
-    echo "-------> collect static"
-    python $MANAGE_FILE collectstatic --noinput --traceback
+    echo "-----> collect static"
+    python $MANAGE_FILE collectstatic --noinput --traceback | indent
 
 fi
 
